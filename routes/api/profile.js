@@ -7,7 +7,7 @@ const {check, validationResult, body} = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
-const { response } = require('express');
+const Post = require('../../models/Post');
 
 // @route   GET api/profile/me
 // @desc    Get current users profile
@@ -161,6 +161,8 @@ router.delete(
     auth,
     async (req, res) => {
         try {
+            //Delete user posts
+            await Post.deleteMany({user: req.user.id});
             //Delete profile
             await Profile.findOneAndDelete({user: req.user.id});
             //Delete user
@@ -363,10 +365,10 @@ router.get(
                 headers: {'user-agent': 'node.js'}
             };
 
-            request(options, (error, response, body) => {
+            request(options, (error, res, body) => {
                 if(error) console.error(error);
 
-                if(response.statusCode != 200){
+                if(res.statusCode != 200){
                     return res.status(404).json({msg: 'No Github profile found'});
                 }
 
