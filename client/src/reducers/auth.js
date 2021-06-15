@@ -1,4 +1,3 @@
-/* eslint-disable import/no-anonymous-default-export */
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
@@ -17,7 +16,7 @@ const initialState = {
     user: null
 };
 
-export default function(state = initialState, action) {
+function authReducer(state = initialState, action) {
 
     const {type, payload} = action;
 
@@ -54,3 +53,5 @@ export default function(state = initialState, action) {
             return state;
     }
 };
+
+export default authReducer;
